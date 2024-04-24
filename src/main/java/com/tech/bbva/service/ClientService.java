@@ -14,6 +14,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.tech.bbva.domain.MicroserviceConstants.PREVIOUS_ID_UNAVAILABLE;
+
 @Service
 public class ClientService {
 
@@ -79,7 +81,7 @@ public class ClientService {
 
     private Long getPreviousServiceBankId(ClientEntity entity){
         Optional<ClientEntity> client = clientRepository.findById(entity.getClientId());
-        Long previousServiceBankId = -1L;
+        Long previousServiceBankId = PREVIOUS_ID_UNAVAILABLE;
         if(client.isPresent()){
             if(Objects.nonNull(client.get().getBankServiceId())){
                 previousServiceBankId = client.get().getBankServiceId().getBankServiceId();

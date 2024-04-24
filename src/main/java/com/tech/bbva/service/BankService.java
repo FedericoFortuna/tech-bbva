@@ -1,5 +1,6 @@
 package com.tech.bbva.service;
 
+import com.tech.bbva.domain.MicroserviceConstants;
 import com.tech.bbva.domain.entity.BankServiceEntity;
 import com.tech.bbva.domain.entity.ClientEntity;
 import com.tech.bbva.service.repository.BankServiceRepository;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 import java.util.Objects;
 import java.util.Optional;
 
+import static com.tech.bbva.domain.MicroserviceConstants.PREVIOUS_ID_UNAVAILABLE;
+
 @Service
 public class BankService {
 
@@ -17,7 +20,7 @@ public class BankService {
 
 
     public void updateBankService(Long previousServiceBankId, ClientEntity client) {
-        if(previousServiceBankId != -1L){
+        if(!Objects.equals(previousServiceBankId, PREVIOUS_ID_UNAVAILABLE)){
             subtractQServed(previousServiceBankId);
         }
 
