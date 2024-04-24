@@ -24,7 +24,7 @@ public class BankServiceEntity {
     private Boolean exAtt;
     private Boolean exTechSupport;
 
-    @OneToMany(mappedBy = "bankService")
+    @OneToMany(mappedBy = "bankServiceId")
     private List<ClientEntity> clients;
 
 }

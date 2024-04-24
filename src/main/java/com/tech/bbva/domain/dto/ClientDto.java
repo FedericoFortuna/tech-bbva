@@ -1,21 +1,15 @@
-package com.tech.bbva.domain.entity;
+package com.tech.bbva.domain.dto;
 
 import lombok.*;
+import org.springframework.lang.Nullable;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "client")
 @Getter
 @Setter
-@NoArgsConstructor
+@ToString
 @AllArgsConstructor
 @Builder
-@ToString
-@EqualsAndHashCode
-public class ClientEntity {
+public class ClientDto {
 
-    @Id
     private Long clientId;
     private String name;
     private String lastName;
@@ -24,10 +18,11 @@ public class ClientEntity {
     private Integer pc;
     private String telephone;
     private String mobilPhone;
+
+    @Nullable
     private String tClient;
 
-    @ManyToOne
-    @JoinColumn(name = "bank_service_id")
-    private BankServiceEntity bankServiceId;
+    @Nullable
+    private BankServiceDto service;
 
 }

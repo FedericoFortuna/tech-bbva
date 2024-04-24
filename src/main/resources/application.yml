@@ -6,7 +6,13 @@ spring:
     username: sa
     password: password
     driverClassName: org.h2.Driver
+    initialization-mode: always
+    data: classpath:data.sql
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
+    defer-datasource-initialization: true
+    init:
+      mode: always
   h2:
     console.enabled: true
+
