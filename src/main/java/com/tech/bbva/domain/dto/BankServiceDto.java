@@ -10,5 +10,6 @@ import lombok.*;
 @Builder
 public class BankServiceDto {
     private Long id;
+    private String name;
 
 }

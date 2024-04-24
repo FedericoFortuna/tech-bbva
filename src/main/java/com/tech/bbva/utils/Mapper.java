@@ -38,9 +38,10 @@ public class Mapper {
                 .build();
     }
 
-    private static BankServiceDto buildBankServiceDtoFromEntity(Long id){
+    private static BankServiceDto buildBankServiceDtoFromEntity(Long id, String name){
         return BankServiceDto.builder()
                 .id(id)
+                .name(name)
                 .build();
     }
 
@@ -58,8 +59,7 @@ public class Mapper {
                 .tClient(Objects.nonNull(entity.getTClient()) ? entity.getTClient() : Strings.EMPTY);
 
         if (Objects.nonNull(entity.getBankServiceId())) {
-            BankServiceDto bankService = buildBankServiceDtoFromEntity(entity.getBankServiceId().getBankServiceId());
-            //entity.getBankServiceId().getName()
+            BankServiceDto bankService = buildBankServiceDtoFromEntity(entity.getBankServiceId().getBankServiceId(), entity.getBankServiceId().getName());
             builder.service(bankService);
         }
 
