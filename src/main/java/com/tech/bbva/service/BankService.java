@@ -2,6 +2,7 @@ package com.tech.bbva.service;
 
 import com.tech.bbva.domain.entity.BankServiceEntity;
 import com.tech.bbva.domain.entity.ClientEntity;
+import com.tech.bbva.exception.BankServiceNotFoundException;
 import com.tech.bbva.service.repository.BankServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,13 @@ public class BankService {
 
         if(Objects.nonNull(client.getBankServiceId())){
             addQServed(client);
+        }
+    }
+
+    public void checkBankServiceId(Long id){
+        Optional<BankServiceEntity> bankServiceEntity = bankServiceRepository.findById(id);
+        if(!bankServiceEntity.isPresent()){
+            throw new BankServiceNotFoundException();
         }
     }
 

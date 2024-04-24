@@ -2,6 +2,7 @@ package com.tech.bbva.service;
 
 import com.tech.bbva.domain.dto.ClientDto;
 import com.tech.bbva.domain.entity.ClientEntity;
+import com.tech.bbva.exception.ClientNotFoundException;
 import com.tech.bbva.service.repository.ClientRepository;
 import com.tech.bbva.utils.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,11 @@ public class ClientService {
     private BankService bankService;
 
     public void saveClient(ClientDto client){
+
+        if(Objects.nonNull(client.getService())){
+            checkService(client.getService().getId());
+        }
+
         ClientEntity entity = Mapper.clientDtoToEntity(client);
         Long previousServiceBankId = getPreviousServiceBankId(entity);
         clientRepository.save(entity);
@@ -39,8 +45,9 @@ public class ClientService {
         Optional<ClientEntity> entityOptional = clientRepository.findById(Long.parseLong(id));
 
         if(!entityOptional.isPresent()){
-            //TODO
+            throw new ClientNotFoundException();
         }
+
         ClientEntity entity = entityOptional.get();
         entity.setMobilPhone(phone);
 
@@ -51,11 +58,11 @@ public class ClientService {
     }
 
     public List<ClientDto> getClientByServiceId(String id){
+
+        checkService(Long.parseLong(id));
+
         Optional<List<ClientEntity>> optionalClientEntities = clientRepository.findByBankServiceId_BankServiceId(Long.parseLong(id));
 
-        if(!optionalClientEntities.isPresent()){
-            //TODO
-        }
         List<ClientEntity> clientEntities = optionalClientEntities.get();
         return clientEntities.stream().map(Mapper::clientEntityToDto).collect(Collectors.toList());
     }
@@ -75,5 +82,9 @@ public class ClientService {
         }
 
         return previousServiceBankId;
+    }
+
+    private void checkService(Long id){
+        bankService.checkBankServiceId(id);
     }
 }
