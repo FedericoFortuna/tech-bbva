@@ -1,6 +1,6 @@
 package com.tech.bbva.domain;
 
-public enum BankService {
+public enum TBankService {
     PRESTAMO,
     PLAZO_FIJO,
     CHEQUE,

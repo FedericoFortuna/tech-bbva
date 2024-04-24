@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -36,7 +35,6 @@ public class ClientController {
 
     @GetMapping
     public ResponseEntity<List<ClientDto>> getClients(){
-
         List<ClientDto> list = service.getClients();
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
@@ -57,8 +55,6 @@ public class ClientController {
 
     /*
     TODO
-    * Hacer que cuando devuelve todos los clientes, o por servicio, tambien devuelva el nombre del servicio
-    * Agregar logica de que cuando se agrega un cliente con un servicio -> updatear la qServed del servicio
     * Hacer test unitarios
     * Agregar logging
     * Agregar manejo de excepciones

@@ -1,14 +1,16 @@
 package com.tech.bbva.service;
 
 import com.tech.bbva.domain.dto.ClientDto;
+import com.tech.bbva.domain.entity.BankServiceEntity;
 import com.tech.bbva.domain.entity.ClientEntity;
+import com.tech.bbva.service.repository.BankServiceRepository;
 import com.tech.bbva.service.repository.ClientRepository;
 import com.tech.bbva.utils.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -17,16 +19,27 @@ public class ClientService {
 
     @Autowired
     private ClientRepository clientRepository;
+
+    @Autowired
+    private BankServiceRepository bankServiceRepository;
+
+    @Autowired
+    private BankService bankService;
+
     public void saveClient(ClientDto client){
         ClientEntity entity = Mapper.clientDtoToEntity(client);
+        Long previousServiceBankId = getPreviousServiceBankId(entity);
         clientRepository.save(entity);
+        updateBankService(entity, previousServiceBankId);
     }
 
 
     public void saveClients(List<ClientDto> clients){
         for (ClientDto dto : clients) {
             ClientEntity entity = Mapper.clientDtoToEntity(dto);
+            Long previousServiceBankId = getPreviousServiceBankId(entity);
             clientRepository.save(entity);
+            updateBankService(entity, previousServiceBankId);
         }
     }
 
@@ -57,5 +70,22 @@ public class ClientService {
         }
         List<ClientEntity> clientEntities = optionalClientEntities.get();
         return clientEntities.stream().map(Mapper::clientEntityToDto).collect(Collectors.toList());
+    }
+
+
+    private void updateBankService(ClientEntity entity, Long previousServiceBankId){
+        bankService.updateBankService(previousServiceBankId, entity);
+    }
+
+    private Long getPreviousServiceBankId(ClientEntity entity){
+        Optional<ClientEntity> client = clientRepository.findById(entity.getClientId());
+        Long previousServiceBankId = -1L;
+        if(client.isPresent()){
+            if(Objects.nonNull(client.get().getBankServiceId())){
+                previousServiceBankId = client.get().getBankServiceId().getBankServiceId();
+            }
+        }
+
+        return previousServiceBankId;
     }
 }
