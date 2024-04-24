@@ -27,12 +27,6 @@ public class ClientController {
         return new ResponseEntity<>("Client registered successfully", HttpStatus.CREATED);
     }
 
-    @PostMapping("/register/list")
-    public ResponseEntity<String> registerClients(@RequestBody List<ClientDto> clients) {
-        service.saveClients(clients);
-        return new ResponseEntity<>("Clients registered successfully", HttpStatus.CREATED);
-    }
-
     @GetMapping
     public ResponseEntity<List<ClientDto>> getClients(){
         List<ClientDto> list = service.getClients();

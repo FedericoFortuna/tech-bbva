@@ -1,9 +1,7 @@
 package com.tech.bbva.service;
 
 import com.tech.bbva.domain.dto.ClientDto;
-import com.tech.bbva.domain.entity.BankServiceEntity;
 import com.tech.bbva.domain.entity.ClientEntity;
-import com.tech.bbva.service.repository.BankServiceRepository;
 import com.tech.bbva.service.repository.ClientRepository;
 import com.tech.bbva.utils.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +21,6 @@ public class ClientService {
     private ClientRepository clientRepository;
 
     @Autowired
-    private BankServiceRepository bankServiceRepository;
-
-    @Autowired
     private BankService bankService;
 
     public void saveClient(ClientDto client){
@@ -33,16 +28,6 @@ public class ClientService {
         Long previousServiceBankId = getPreviousServiceBankId(entity);
         clientRepository.save(entity);
         updateBankService(entity, previousServiceBankId);
-    }
-
-
-    public void saveClients(List<ClientDto> clients){
-        for (ClientDto dto : clients) {
-            ClientEntity entity = Mapper.clientDtoToEntity(dto);
-            Long previousServiceBankId = getPreviousServiceBankId(entity);
-            clientRepository.save(entity);
-            updateBankService(entity, previousServiceBankId);
-        }
     }
 
     public List<ClientDto> getClients(){
@@ -67,6 +52,7 @@ public class ClientService {
 
     public List<ClientDto> getClientByServiceId(String id){
         Optional<List<ClientEntity>> optionalClientEntities = clientRepository.findByBankServiceId_BankServiceId(Long.parseLong(id));
+
         if(!optionalClientEntities.isPresent()){
             //TODO
         }
