@@ -79,6 +79,15 @@
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<excludes>
+						<exclude>**/BbvaTechApplication*</exclude>
+						<exclude>**/domain/TBankService*</exclude>
+						<exclude>**/domain/MicroserviceConstants*</exclude>
+						<exclude>**/domain/dto/*</exclude>
+						<exclude>**/domain/entity/*</exclude>
+					</excludes>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
