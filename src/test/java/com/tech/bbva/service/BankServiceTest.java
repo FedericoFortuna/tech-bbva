@@ -3,7 +3,9 @@ package com.tech.bbva.service;
 import com.tech.bbva.domain.TBankService;
 import com.tech.bbva.domain.entity.BankServiceEntity;
 import com.tech.bbva.domain.entity.ClientEntity;
+import com.tech.bbva.exception.BankServiceNotFoundException;
 import com.tech.bbva.service.repository.BankServiceRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -118,6 +120,13 @@ public class BankServiceTest {
         bankService.updateBankService(previousServiceBankId, clientWithoutService);
 
         verify(bankServiceRepository, times(0)).save(any());
+    }
+
+    @Test
+    void bankServiceIdNonExistentShoudThrowException(){
+        when(bankServiceRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(BankServiceNotFoundException.class, () -> bankService.checkBankServiceId(10L));
     }
 
 }

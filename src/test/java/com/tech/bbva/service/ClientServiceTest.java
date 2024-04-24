@@ -5,7 +5,9 @@ import com.tech.bbva.domain.dto.BankServiceDto;
 import com.tech.bbva.domain.dto.ClientDto;
 import com.tech.bbva.domain.entity.BankServiceEntity;
 import com.tech.bbva.domain.entity.ClientEntity;
+import com.tech.bbva.exception.ClientNotFoundException;
 import com.tech.bbva.service.repository.ClientRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -39,7 +41,10 @@ public class ClientServiceTest {
 
     private ClientDto clientDto;
 
+    private ClientDto clientDtoWithoutService;
     private ClientEntity clientEntity;
+
+    private ClientEntity clientWithoutService;
 
     private final List<ClientEntity> clients = new ArrayList<>();
 
@@ -81,7 +86,7 @@ public class ClientServiceTest {
                 .build();
 
 
-        ClientDto clientDtoWithoutService = ClientDto.builder()
+        clientDtoWithoutService = ClientDto.builder()
                 .clientId(1L)
                 .name("name")
                 .lastName("lastName")
@@ -105,7 +110,7 @@ public class ClientServiceTest {
                 .bankServiceId(bankServiceEntity)
                 .build();
 
-        ClientEntity clientWithoutService = ClientEntity.builder()
+        clientWithoutService = ClientEntity.builder()
                 .clientId(2L)
                 .name("name")
                 .lastName("lastName")
@@ -142,8 +147,23 @@ public class ClientServiceTest {
         when(clientRepository.save(any())).thenReturn(clientEntity);
         when(clientRepository.findById(anyLong())).thenReturn(Optional.of(clientEntity));
         doNothing().when(bankService).updateBankService(anyLong(), any(ClientEntity.class));
+        doNothing().when(bankService).checkBankServiceId(anyLong());
 
         service.saveClient(clientDto);
+
+        verify(clientRepository, times(1)).save(any());
+        verify(clientRepository, times(1)).findById(anyLong());
+        verify(bankService, times(1)).updateBankService(anyLong(), any(ClientEntity.class));
+    }
+
+    @Test
+    void testSaveClientWithoutServiceId() {
+
+        when(clientRepository.save(any())).thenReturn(clientWithoutService);
+        when(clientRepository.findById(anyLong())).thenReturn(Optional.of(clientWithoutService));
+        doNothing().when(bankService).updateBankService(anyLong(), any(ClientEntity.class));
+
+        service.saveClient(clientDtoWithoutService);
 
         verify(clientRepository, times(1)).save(any());
         verify(clientRepository, times(1)).findById(anyLong());
@@ -173,6 +193,17 @@ public class ClientServiceTest {
 
 
         assertEquals(phone, updatedClient.getMobilPhone());
+    }
+
+    @Test
+    void updateClientThatNotExists_ShouldThrowException() {
+
+        when(clientRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        String id = "1";
+        String phone = "123456789";
+
+        Assertions.assertThrows(ClientNotFoundException.class, () -> service.updateClientPhone(id, phone));
     }
 
 
