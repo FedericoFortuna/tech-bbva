@@ -86,6 +86,8 @@
 						<exclude>**/domain/MicroserviceConstants*</exclude>
 						<exclude>**/domain/dto/*</exclude>
 						<exclude>**/domain/entity/*</exclude>
+						<exclude>**/exception/*</exclude>
+						<exclude>**/controller/*</exclude>
 					</excludes>
 				</configuration>
 			</plugin>
