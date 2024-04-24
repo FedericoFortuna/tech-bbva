@@ -56,7 +56,6 @@ public class ClientController {
     /*
     TODO
     * Hacer test unitarios
-    * Agregar logging
     * Agregar manejo de excepciones
      */
 

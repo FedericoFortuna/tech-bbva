@@ -1,6 +1,5 @@
 package com.tech.bbva.service;
 
-import com.tech.bbva.domain.MicroserviceConstants;
 import com.tech.bbva.domain.entity.BankServiceEntity;
 import com.tech.bbva.domain.entity.ClientEntity;
 import com.tech.bbva.service.repository.BankServiceRepository;
