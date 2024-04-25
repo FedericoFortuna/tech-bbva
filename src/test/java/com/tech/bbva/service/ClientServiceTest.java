@@ -221,30 +221,4 @@ public class ClientServiceTest {
         }
     }
 
-
-//
-//    @Test
-//    void testUpdateClientPhone_ClientNotFound() {
-//        // Arrange
-//        String id = "1";
-//        String phone = "123456789";
-//        when(clientRepository.findById(anyLong())).thenReturn(Optional.empty());
-//
-//        // Act & Assert
-//        assertThrows(ClientNotFoundException.class, () -> clientService.updateClientPhone(id, phone));
-//    }
-//
-
-//
-//    @Test
-//    void testGetClientByServiceId_NoClientsFound() {
-//        // Arrange
-//        String id = "1";
-//        when(clientRepository.findByBankServiceId_BankServiceId(anyLong())).thenReturn(Optional.empty());
-//
-//        // Act & Assert
-//        assertThrows(ClientNotFoundException.class, () -> clientService.getClientByServiceId(id));
-//    }
-
-
 }
