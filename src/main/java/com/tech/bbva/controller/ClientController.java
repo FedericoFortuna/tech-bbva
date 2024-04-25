@@ -39,7 +39,7 @@ public class ClientController {
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
-    @GetMapping("/{bankId}")
+    @GetMapping("/service/{bankId}")
     public ResponseEntity<List<ClientDto>> getClientsByServiceBankId(@PathVariable String bankId) {
         List<ClientDto> list = service.getClientByServiceId(bankId);
         return new ResponseEntity<>(list, HttpStatus.OK);
